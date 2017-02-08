@@ -9,15 +9,15 @@ resource_registry:
   #OS::TripleO::ComputeOvsDpdk::Net::SoftwareConfig: /home/stack/templates/nic-configs/computeovsdpdk.yaml
 
 parameter_defaults:
-  ControlPlaneDefaultRoute: "172.16.0.1"
+  ControlPlaneDefaultRoute: "172.18.0.1"
   ControlPlaneSubnetCidr: "24"
   DnsServers: ['8.8.8.8','8.8.4.4']
-  EC2MetadataIp: "172.16.0.1"
-  ExternalAllocationPools: [{'start': '172.16.0.150', 'end': '172.16.0.200'}]
-  ExternalNetCidr: "172.16.0.0/24"
+  EC2MetadataIp: "172.18.0.1"
+  ExternalAllocationPools: [{'start': '172.18.0.150', 'end': '172.18.0.200'}]
+  ExternalNetCidr: "172.18.0.0/24"
   #ExternalNetworkVlanID: 10
   NeutronExternalNetworkBridge: ""
-  ExternalInterfaceDefaultRoute: "172.16.0.1"
+  ExternalInterfaceDefaultRoute: "172.18.0.1"
 
   InternalApiNetCidr: 10.10.100.0/24
   StorageNetCidr: 10.10.101.0/24
@@ -34,12 +34,17 @@ parameter_defaults:
 
   OvercloudComputeFlavor: "compute"
   OvercloudControlFlavor: "control"
-  ComputeCount: 1
+  ComputeCount: 2
 
+  # NeutronBridgeMappings translates to neutron::agents::ml2::ovs::bridge_mappings
   NeutronBridgeMappings: "datacentre:br-ex,dpdknet:br-link"
+  # NeutronFlatNetworks translates to neutron::plugins::ml2::flat_networks
   NeutronFlatNetworks: "datacentre"
+  # NeutronNetworkVLANRanges translates to neutron::plugins::ml2::network_vlan_ranges
   NeutronNetworkVLANRanges: "dpdknet:100:103"
-  NeutronNetworkType: "vxlan"
+  # NeutronNetworkType translates to neutron::plugins::ml2::tenant_network_types
+  NeutronNetworkType: ['vlan','vxlan']
+  # NeutronTunnelTypes translates to neutron::agents::ml2::ovs::tunnel_types
   NeutronTunnelTypes: "vxlan"
 
   NeutronDpdkCoreList: "'2,3,22,23'"
