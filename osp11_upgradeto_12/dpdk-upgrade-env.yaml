@@ -1,0 +1,5 @@
+parameter_defaults:
+  # Run os-net-config only on DPDK compute nodes during the upgrade
+  # to ensure PCI address is updated to the existing DPDK port.
+  # NOTE: No changes in the nic-config templates.
+  ComputeNetworkDeploymentActions: ['CREATE', 'UPDATE']
